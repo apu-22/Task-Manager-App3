@@ -73,3 +73,26 @@ router.get("/:id", (req, res) => {
   res.json({ success: true, data: task });
 });
 
+
+
+// ─── POST /api/tasks
+router.post("/", validateTask, (req, res) => {
+  const { title, description, status } = req.body;
+
+  const newTask = {
+    id: uuidv4(),
+    title: title.trim(),
+    description: description ? description.trim() : "",
+    status: status || "To Do",
+    createdAt: new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+  };
+
+  tasks.push(newTask);
+
+  res.status(201).json({
+    success: true,
+    message: "Task created successfully",
+    data: newTask,
+  });
+});
