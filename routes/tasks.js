@@ -137,3 +137,22 @@ router.patch("/:id/status", validateStatus, (req, res) => {
     data: task,
   });
 });
+
+
+// ─── DELETE /api/tasks/:id 
+router.delete("/:id", (req, res) => {
+  const index = tasks.findIndex((t) => t.id === req.params.id);
+  if (index === -1) {
+    return res.status(404).json({ success: false, message: "Task not found" });
+  }
+
+  const deleted = tasks.splice(index, 1)[0];
+
+  res.json({
+    success: true,
+    message: "Task deleted successfully",
+    data: deleted,
+  });
+});
+
+module.exports = router;
