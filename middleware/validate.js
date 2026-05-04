@@ -4,7 +4,7 @@ const VALID_STATUSES = ["To Do", "In Progress", "Completed"];
 const validateTask = (req, res, next) => {
   const { title, status } = req.body;
 
-  // Title is required
+  //title checks
   if (!title || title.trim() === "") {
     return res.status(400).json({
       success: false,
@@ -12,7 +12,7 @@ const validateTask = (req, res, next) => {
     });
   }
 
-  // Title max length
+  // Title length checks
   if (title.trim().length > 100) {
     return res.status(400).json({
       success: false,
@@ -20,7 +20,7 @@ const validateTask = (req, res, next) => {
     });
   }
 
-  // Status validation (if provided)
+  // Status validation 
   if (status && !VALID_STATUSES.includes(status)) {
     return res.status(400).json({
       success: false,
@@ -30,5 +30,28 @@ const validateTask = (req, res, next) => {
 
   next();
 };
+
+
+// Validate status only (for PATCH)
+const validateStatus = (req, res, next) => {
+  const { status } = req.body;
+
+  if (!status) {
+    return res.status(400).json({
+      success: false,
+      message: "Status is required",
+    });
+  }
+
+  if (!VALID_STATUSES.includes(status)) {
+    return res.status(400).json({
+      success: false,
+      message: `Status must be one of: ${VALID_STATUSES.join(", ")}`,
+    });
+  }
+
+  next();
+};
+
 
 module.exports = { validateTask, validateStatus };
