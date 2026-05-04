@@ -96,3 +96,25 @@ router.post("/", validateTask, (req, res) => {
     data: newTask,
   });
 });
+
+
+// ─── PUT /api/tasks/:id 
+router.put("/:id", validateTask, (req, res) => {
+  const task = findTask(req.params.id);
+  if (!task) {
+    return res.status(404).json({ success: false, message: "Task not found" });
+  }
+
+  const { title, description, status } = req.body;
+
+  task.title = title.trim();
+  task.description = description ? description.trim() : task.description;
+  task.status = status || task.status;
+  task.updatedAt = new Date().toISOString();
+
+  res.json({
+    success: true,
+    message: "Task updated successfully",
+    data: task,
+  });
+});
