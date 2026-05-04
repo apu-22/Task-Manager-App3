@@ -118,3 +118,22 @@ router.put("/:id", validateTask, (req, res) => {
     data: task,
   });
 });
+
+
+
+// ─── PATCH /api/tasks/:id/status 
+router.patch("/:id/status", validateStatus, (req, res) => {
+  const task = findTask(req.params.id);
+  if (!task) {
+    return res.status(404).json({ success: false, message: "Task not found" });
+  }
+
+  task.status = req.body.status;
+  task.updatedAt = new Date().toISOString();
+
+  res.json({
+    success: true,
+    message: "Status updated successfully",
+    data: task,
+  });
+});
