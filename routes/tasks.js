@@ -62,3 +62,14 @@ router.get("/", (req, res) => {
     data: result,
   });
 });
+
+
+// ─── GET /api/tasks/:id 
+router.get("/:id", (req, res) => {
+  const task = findTask(req.params.id);
+  if (!task) {
+    return res.status(404).json({ success: false, message: "Task not found" });
+  }
+  res.json({ success: true, data: task });
+});
+
