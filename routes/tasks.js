@@ -22,3 +22,43 @@ let tasks = [
     updatedAt: new Date().toISOString(),
   },
 ];
+
+
+const findTask = (id) => tasks.find((t) => t.id === id);
+
+// ─── GET /api/tasks 
+router.get("/", (req, res) => {
+  let result = [...tasks];
+  const { status, search, sort } = req.query;
+
+  // Filter by status
+  if (status) {
+    result = result.filter(
+      (t) => t.status.toLowerCase() === status.toLowerCase()
+    );
+  }
+
+  // Search by title or description
+  if (search) {
+    const keyword = search.toLowerCase();
+    result = result.filter(
+      (t) =>
+        t.title.toLowerCase().includes(keyword) ||
+        (t.description && t.description.toLowerCase().includes(keyword))
+    );
+  }
+
+  // Sort by createdAt
+  if (sort === "asc") {
+    result.sort((a, b) => new Date(a.createdAt) - new Date(b.createdAt));
+  } else if (sort === "desc") {
+    result.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+  }
+
+  //ressponce with filtered tasks
+  res.json({
+    success: true,
+    count: result.length,
+    data: result,
+  });
+});
