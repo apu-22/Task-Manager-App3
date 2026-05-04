@@ -22,6 +22,21 @@ app.get("/", (req, res) => {
   });
 });
 
+// Task routes
+app.use("/api/tasks", taskRoutes);
+
+// err handling
+app.use((req, res) => {
+  res.status(404).json({ success: false, message: "Route not found" });
+});
+
+// Global error handler
+app.use((err, req, res, next) => {
+  console.error(err.stack);
+  res.status(500).json({ success: false, message: "Internal Server Error" });
+});
+
+
 app.listen(PORT, () => {
   console.log(`Server running at http://localhost:${PORT}`);
 });
