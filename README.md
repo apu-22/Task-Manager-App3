@@ -48,7 +48,7 @@ It allows users to create, read, update, and delete tasks without using any data
 1. Clone the repository:
 
 ```bash
-git clone <your-repo-link>
+[git clone <your-repo-link>](https://github.com/apu-22/Basic-Task-Manager-App)
 ```
 
 2. Go to project folder:
